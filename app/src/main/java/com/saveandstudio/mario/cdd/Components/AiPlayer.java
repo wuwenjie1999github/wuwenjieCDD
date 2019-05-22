@@ -171,6 +171,106 @@ public class AiPlayer extends MonoBehavior {
             sequentialCardMatch(cardBucket, cardsSample, i);
         }
         //这里特判A2345和23456
+        if(cardBucket.get(0).get(0).getFigure() == 3
+        && cardBucket.get(1).get(0).getFigure() == 4
+        && cardBucket.get(2).get(0).getFigure() == 5) {
+            if(cardBucket.get(3).get(0).getFigure() == 6
+            && cardBucket.get(cardBucket.size() - 1).get(0).getFigure() == 2) {
+                //23456
+                for (int i1 = 0; i1 < cardBucket.get(cardBucket.size() - 1).size(); i1++) {
+                    //第一层循环，放入2
+                    ArrayList<Card> cardsSample = new ArrayList<>();
+                    cardsSample.add(cardBucket.get(cardBucket.size() - 1).get(i1));
+                    for(int weightNum = 0; weightNum < 4; weightNum++)
+                        cardBucket.get(cardBucket.size() - 1).get(i1).weights[weightNum] *= decreaseRate;
+                    for (int i2 = 0; i2 < cardBucket.get(0).size(); i2++) {
+                        //第二层循环，放入3
+                        cardsSample.add(cardBucket.get(0).get(i2));
+                        for(int weightNum = 0; weightNum < 4; weightNum++)
+                            cardBucket.get(0).get(i2).weights[weightNum] *= decreaseRate;
+                        for (int i3 = 0; i3 < cardBucket.get(1).size(); i3++) {
+                            //第三层循环，放入4
+                            cardsSample.add(cardBucket.get(1).get(i3));
+                            for(int weightNum = 0; weightNum < 4; weightNum++)
+                                cardBucket.get(1).get(i2).weights[weightNum] *= decreaseRate;
+                            for (int i4 = 0; i4 < cardBucket.get(2).size(); i4++) {
+                                //第四层循环，放入5
+                                cardsSample.add(cardBucket.get(2).get(i4));
+                                for(int weightNum = 0; weightNum < 4; weightNum++)
+                                    cardBucket.get(2).get(i4).weights[weightNum] *= decreaseRate;
+                                for (int i5 = 0; i5 < cardBucket.get(3).size(); i5++) {
+                                    //第5层循环，放入6
+                                    cardsSample.add(cardBucket.get(3).get(i5));
+                                    for(int weightNum = 0; weightNum < 4; weightNum++)
+                                        cardBucket.get(3).get(i5).weights[weightNum] *= decreaseRate;
+
+                                    cardPack_5.add(cardsSample);
+                                    //若为同花顺，则升高这五张牌的五张出牌权重
+                                    if (CardSystem.getInstance().judgeCardType(cardsSample) == 4) {
+                                        for (Card card : cardsSample) {
+                                            card.weights[4] /= decreaseRate;
+                                        }
+                                    }
+
+                                    cardsSample.remove(cardsSample.size() - 1);
+                                }
+                                cardsSample.remove(cardsSample.size() - 1);
+                            }
+                            cardsSample.remove(cardsSample.size() - 1);
+                        }
+                        cardsSample.remove(cardsSample.size() - 1);
+                    }
+                }
+            }
+            else if(cardBucket.get(cardBucket.size() - 1).get(0).getFigure() == 2
+                 && cardBucket.get(cardBucket.size() - 2).get(0).getFigure() == 1) {
+                //A2345
+                for (int i1 = 0; i1 < cardBucket.get(cardBucket.size() - 2).size(); i1++) {
+                    //第一层循环，放入A
+                    ArrayList<Card> cardsSample = new ArrayList<>();
+                    cardsSample.add(cardBucket.get(cardBucket.size() - 2).get(i1));
+                    for(int weightNum = 0; weightNum < 4; weightNum++)
+                        cardBucket.get(cardBucket.size() - 2).get(i1).weights[weightNum] *= decreaseRate;
+                    for (int i2 = 0; i2 < cardBucket.get(cardBucket.size() - 1).size(); i2++) {
+                        //第二层循环，放入2
+                        cardsSample.add(cardBucket.get(cardBucket.size() - 1).get(i2));
+                        for(int weightNum = 0; weightNum < 4; weightNum++)
+                            cardBucket.get(cardBucket.size() - 1).get(i2).weights[weightNum] *= decreaseRate;
+                        for (int i3 = 0; i3 < cardBucket.get(0).size(); i3++) {
+                            //第三层循环，放入3
+                            cardsSample.add(cardBucket.get(0).get(i3));
+                            for(int weightNum = 0; weightNum < 4; weightNum++)
+                                cardBucket.get(0).get(i3).weights[weightNum] *= decreaseRate;
+                            for (int i4 = 0; i4 < cardBucket.get(1).size(); i4++) {
+                                //第四层循环，放入4
+                                cardsSample.add(cardBucket.get(1).get(i4));
+                                for(int weightNum = 0; weightNum < 4; weightNum++)
+                                    cardBucket.get(1).get(i4).weights[weightNum] *= decreaseRate;
+                                for (int i5 = 0; i5 < cardBucket.get(2).size(); i5++) {
+                                    //第五层循环，放入5
+                                    cardsSample.add(cardBucket.get(2).get(i5));
+                                    for(int weightNum = 0; weightNum < 4; weightNum++)
+                                        cardBucket.get(2).get(i5).weights[weightNum] *= decreaseRate;
+
+                                    cardPack_5.add(cardsSample);
+                                    //若为同花顺，则升高这五张牌的五张出牌权重
+                                    if (CardSystem.getInstance().judgeCardType(cardsSample) == 4) {
+                                        for (Card card : cardsSample) {
+                                            card.weights[4] /= decreaseRate;
+                                        }
+                                    }
+
+                                    cardsSample.remove(cardsSample.size() - 1);
+                                }
+                                cardsSample.remove(cardsSample.size() - 1);
+                            }
+                            cardsSample.remove(cardsSample.size() - 1);
+                        }
+                        cardsSample.remove(cardsSample.size() - 1);
+                    }
+                }
+            }
+        }
 
 
         return false;
